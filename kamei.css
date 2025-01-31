@@ -1,0 +1,311 @@
+/*-
+ * SPDX-License-Identifier: MIT
+ *
+ *    _  __   _   __  __ ___ ___   ___ ___ ___
+ *   | |/ /  /_\ |  \/  | __|_ _| / __/ __/ __|
+ *   | ' <  / _ \| |\/| | _| | | | (__\__ \__ \
+ *   |_|\_\/_/ \_\_|  |_|___|___(_)___|___/___/     version 0.0.1
+ *
+ * Copyright (C) 2025 KusaReMKN.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the " Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/*****************************************************************************
+ * 変数宣言と御託の部分
+ ****************************************************************************/
+:root {
+    /*
+     * フォントファミリは PostScript の基本フォントを尊重し、Times, Helvetica,
+     * Courier を基調として構成する。日本語フォントである Ryumin-Light 及び
+     * GothicBBB-Medium に対応するフォントはまちまちであるため、適宜指定する。
+     *
+     * まず、Nimbus フォントを指定する。これは TeXLive や Linux で広く用いられ
+     * ているフォントであり、PostScript フォントの代替フォントとして使われる。
+     * 続いて、PostScript フォントそれ自体の名前を指定する。後継のフォントがあ
+     * る場合、macOS、Linux、Windows の順で、より多くの環境にインストールされ
+     * ているような順で記述する。
+     * 日本語のフォントは適宜指定する。Noto Fonts や BIZ UD Fonts は良い選択肢
+     * になる。ただし、Yu Fonts はやや細過ぎるから表示に用いないほうが良い。
+     * 最後に、一般名を必ず指定する。これがフォント指定の最後の砦となる。
+     */
+    --kamei-rm:
+        'Nimbus Roman',
+        Times, 'Times New Roman', Ryumin,
+        'Hiragino Mincho ProN', 'Hiragino Serif',
+        'Noto Serif CJK JP', 'Noto Serif Japanese',
+        'BIZ UDPMimcho', 'BIZ UDMincho',
+        serif;
+    --kamei-sf:
+        'Nimbus Sans',
+        Helvetica, 'Helivetica Neue', Arial, GothicBBB,
+        'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+        'Noto Sans CJK JP', 'Noto Sans Japanese',
+        'BIZ UDPGothic', 'BIZ UDGothic',
+        sans-serif;
+    /*
+     * タイプライタ体における欧文と和文との文字幅の不整合は一旦置いておく。そ
+     * もそも、タイプライタ体で書かれるような内容に和文が含まれているほうがお
+     * かしい。
+     */
+    --kamei-tt:
+        'Nimbus Mono PS',
+        Courier, 'Courier 10 Pitch', 'Courier New', Consolas, GothicBBB,
+        'BIZ UDGothic',
+        monospace;
+    --kamei-ff:
+        var(--kamei-sf);
+
+    /*
+     * 色テーマは色相環の角度を固定して、それ以外の部分でごねごねするといい感
+     * じになる。
+     */
+    --kamei-light-bg:  hsl( 197  10% 100%);
+    --kamei-light-bg2: hsl( 197  20%  90%);
+    --kamei-light-sd:  hsl( 197  10%  50%);
+    --kamei-light-fg:  hsl( 197  10%  10%);
+    --kamei-light-fg2: hsl( 197  20%   0%);
+    --kamei-light-lk:  hsl( 197  90%  30%);
+    --kamei-light-lk2: hsl( 197  80%  20%);
+
+    --kamei-print-bg:  hsl(   0   0% 100%);
+    --kamei-print-bg2: hsl(   0   0%  90%);
+    --kamei-print-sd:  hsl(   0   0%   0% / 0);
+    --kamei-print-fg:  hsl(   0   0%  10%);
+    --kamei-print-fg2: hsl(   0   0%   0%);
+    --kamei-print-lk:  hsl(   0   0%  20%);
+    --kamei-print-lk2: hsl(   0   0%  20%);
+
+    --kamei-dark-bg:   hsl(  17  10%   0%);
+    --kamei-dark-bg2:  hsl(  17  10%  10%);
+    --kamei-dark-sd:   hsl(  17  10%  30%);
+    --kamei-dark-fg:   hsl(  17  10%  90%);
+    --kamei-dark-fg2:  hsl(  17  20% 100%);
+    --kamei-dark-lk:   hsl(  17  90%  70%);
+    --kamei-dark-lk2:  hsl(  17  80%  60%);
+
+    --kamei-bg:  var(--kamei-light-bg);
+    --kamei-bg2: var(--kamei-light-bg2);
+    --kamei-sd:  var(--kamei-light-sd);
+    --kamei-fg:  var(--kamei-light-fg);
+    --kamei-fg2: var(--kamei-light-fg2);
+    --kamei-lk:  var(--kamei-light-lk);
+    --kamei-lk2: var(--kamei-light-lk2);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --kamei-bg:  var(--kamei-dark-bg);
+        --kamei-bg2: var(--kamei-dark-bg2);
+        --kamei-sd:  var(--kamei-dark-sd);
+        --kamei-fg:  var(--kamei-dark-fg);
+        --kamei-fg2: var(--kamei-dark-fg2);
+        --kamei-lk:  var(--kamei-dark-lk);
+        --kamei-lk2: var(--kamei-dark-lk2);
+    }
+}
+@media print {
+    :root {
+        --kamei-bg:  var(--kamei-print-bg);
+        --kamei-bg2: var(--kamei-print-bg2);
+        --kamei-sd:  var(--kamei-print-sd);
+        --kamei-fg:  var(--kamei-print-fg);
+        --kamei-fg2: var(--kamei-print-fg2);
+        --kamei-lk:  var(--kamei-print-lk);
+        --kamei-lk2: var(--kamei-print-lk2);
+    }
+}
+
+/*****************************************************************************
+ * クラスレス CSS の部分
+ ****************************************************************************/
+
+html {
+    /* 基本のフォント */
+    font-family: var(--kamei-ff);
+    /* 行の高さは 1.5 文字分 */
+    line-height: 1.5em;
+    /* 両端揃え（HTML 上で適切に言語設定すること！） */
+    text-align: justify;
+    /* ハイフンはよしなにする */
+    hyphens: auto;
+    /* 背景色 */
+    background-color: var(--kamei-bg);
+    /* 前景色 */
+    color: var(--kamei-fg);
+}
+body {
+    /* 全角幅 40 文字分は伝統的な端末の幅に等しいし、全体は 640 px で良い */
+    max-width: 40rem;
+    /* 余白で中央揃え */
+    margin: auto;
+    /* これに限っては内容の大きさで制御する */
+    box-sizing: content-box;
+    /* 幅を 40rem 確保できないときは 1 文字分余白 */
+    padding: 1rem;
+}
+@media print {
+    :root {
+        --kamei-ff: var(--kamei-rm);
+    }
+    body {
+        max-width: initial;
+        margin: initial;
+        padding: initial;
+        font-size: 10pt;
+    }
+}
+
+body>header:first-child {
+    margin: -1rem calc(-50vw + 50%) 1rem;
+    padding: 1rem calc(50vw - 50%);
+    border-block-end: 1px solid var(--kamei-bg2);
+}
+body>header:first-child>*:last-child {
+    margin-block-end: unset;
+}
+body>footer:last-child {
+    margin: 1rem calc(-50vw + 50%) -1rem;
+    padding: 1rem calc(50vw - 50%);
+    border-block-start: 1px solid var(--kamei-bg2);
+    font-size: small;
+}
+body>footer:last-child small {
+    font-size: inherit;
+}
+body>footer:last-child>*:first-child {
+    margin-block-start: unset;
+}
+body>footer:last-child>*:last-child {
+    margin-block-end: unset;
+}
+
+a:link,
+a:visited {
+    color: var(--kamei-lk);
+}
+a:hover {
+    color: var(--kamei-lk2);
+}
+
+blockquote {
+    /* 背景色調整 */
+    background-color: var(--kamei-bg2);
+    /* 前景色調整 */
+    color: var(--kamei-fg2);
+    /* 余白なし */
+    margin: 1rem auto;
+    /* パディングで空間確保 */
+    padding: .5rem 1.5rem;
+    /* 横に線 */
+    border-inline-start: solid 3px;
+    /* 角丸の時代 */
+    border-radius: 3px;
+    /* 少し陰を落とす */
+    filter: drop-shadow(.125rem .125rem .125rem var(--kamei-sd));
+}
+
+table {
+    /* 余白で中央揃え */
+    margin: 1rem auto;
+    /* 少なくとも半分の幅を取る（見栄えのため） */
+    min-width: 50%;
+    /* セル枠は共有 */
+    border-collapse: collapse;
+    /* 表の上下は太めの線 */
+    border-block: solid 2pt;
+    /* 文字をやや小さくする */
+    font-size: smaller;
+}
+table th,
+table td {
+    /* セル内余白（文字列方向） */
+    padding-inline: .25em;
+}
+table tr:nth-of-type(even) {
+    /* 偶数行目は色付き */
+    background-color: var(--kamei-bg2);
+    color: var(--kamei-fg2);
+}
+table>tbody>tr:first-child>* {
+    /* データ行の先頭行の上で細線 */
+    border-block-start: solid 1pt;
+}
+table>tbody>tr:last-child>* {
+    /* データ行の最後の行の下で細線 */
+    border-block-end: solid 1pt;
+}
+
+[lang|=ja] {
+    /* 日本語の文章は文字間のアキを調整して両端揃えにする */
+    text-justify: inter-character;
+}
+[lang|=en], [lang|=eo] {
+    /* 英語やエスペラントは語間のアキを調整して両端揃えにする */
+    text-justify: inter-word;
+}
+
+/*****************************************************************************
+ * 装飾用 CSS の部分
+ ****************************************************************************/
+
+/* Family class */
+.rm {
+    font-family: var(--kamei-rm);
+}
+.sf {
+    font-family: var(--kamei-sf);
+}
+.tt {
+    font-family: var(--kamei-tt);
+}
+/* Weight class */
+.md {
+    font-weight: normal;
+}
+.bf {
+    font-weight: bold;
+}
+/* Shape class */
+.up {
+    font-style: normal;
+}
+.it {
+    font-style: italic;
+}
+.sl {
+    font-style: oblique;
+}
+.sc {
+    font-style: normal; /* Upper shape */
+    font-variant-caps: small-caps;
+}
+/* Position class */
+.center {
+    text-align: center;
+}
+.end {
+    text-align: end;
+}
+/* miscellaneous */
+.url {
+    overflow-wrap: anywhere;
+    /* 文字間のアキを調整して両端揃えにする */
+    text-justify: inter-character;
+}
+/* ex: se et ts=4 tw=78 : */
