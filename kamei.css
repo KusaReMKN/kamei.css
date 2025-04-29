@@ -220,6 +220,12 @@ blockquote {
     filter: drop-shadow(.125rem .125rem .125rem var(--kamei-sd));
 }
 
+img {
+    /* 最大でも親サイズ */
+    max-width: 100%;
+    height: auto;
+}
+
 table {
     /* 余白で中央揃え */
     margin: 1rem auto;
