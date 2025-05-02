@@ -220,12 +220,6 @@ blockquote {
     filter: drop-shadow(.125rem .125rem .125rem var(--kamei-sd));
 }
 
-img {
-    /* 最大でも親サイズ */
-    max-width: 100%;
-    height: auto;
-}
-
 table {
     /* 余白で中央揃え */
     margin: 1rem auto;
@@ -248,13 +242,21 @@ table tr:nth-of-type(even) {
     background-color: var(--kamei-bg2);
     color: var(--kamei-fg2);
 }
-table>tbody>tr:first-child>* {
+table>thead>tr:first-child>* {
+    /* 分割された表の見た目のため */
+    border-block-start: solid 2pt;
+}
+table>thead>tr:last-child>* {
     /* データ行の先頭行の上で細線 */
+    border-block-end: solid 1pt;
+}
+table>tfoot>tr:first-child>* {
+    /* データ行の最後の行の下で細線 */
     border-block-start: solid 1pt;
 }
-table>tbody>tr:last-child>* {
-    /* データ行の最後の行の下で細線 */
-    border-block-end: solid 1pt;
+table>tfoot>tr:last-child>* {
+    /* 分割された表の見た目のため */
+    border-block-end: solid 2pt;
 }
 
 [lang|=ja] {
